@@ -108,6 +108,8 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            box-sizing: border-box;
+            min-height: 58px; /* 与日期模块等高，保证三个胶囊大小一致 */
             padding: 10px 22px;
             border-radius: 999px;
             background: rgba(255, 255, 255, 0.045);
@@ -137,6 +139,31 @@
             align-items: center;
             gap: 12px;
             white-space: nowrap;
+        }
+
+        .header-pill .calc-icon {
+            flex: none;
+            width: 30px;
+            height: 30px;
+            color: var(--text);
+            transition: color 0.25s ease;
+        }
+
+        .header-pill:hover .calc-icon {
+            color: var(--accent);
+        }
+
+        .header-pill .calc-name {
+            font-size: 13px;
+            line-height: 1;
+            letter-spacing: 0.5px;
+            color: var(--muted);
+            white-space: nowrap;
+            transition: color 0.25s ease;
+        }
+
+        .header-pill:hover .calc-name {
+            color: var(--text);
         }
 
         .date .day {
@@ -803,6 +830,24 @@
             <span class="brand-mark" aria-hidden="true">崔</span>
         </div>
         <div class="header-pills">
+            <div class="header-pill calc-pill" id="calc-link" role="button" tabindex="0"
+                 title="点击在 Bing 中搜索“计算器”" aria-label="计算器，点击在 Bing 中搜索“计算器”">
+                <svg class="calc-icon" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                     stroke-linejoin="round" aria-hidden="true">
+                    <rect x="4" y="2" width="16" height="20" rx="2.5"></rect>
+                    <line x1="8" y1="6" x2="16" y2="6"></line>
+                    <line x1="8" y1="11" x2="8.01" y2="11"></line>
+                    <line x1="12" y1="11" x2="12.01" y2="11"></line>
+                    <line x1="16" y1="11" x2="16.01" y2="11"></line>
+                    <line x1="8" y1="15" x2="8.01" y2="15"></line>
+                    <line x1="12" y1="15" x2="12.01" y2="15"></line>
+                    <line x1="16" y1="15" x2="16.01" y2="15"></line>
+                    <line x1="8" y1="19" x2="12" y2="19"></line>
+                    <line x1="16" y1="19" x2="16.01" y2="19"></line>
+                </svg>
+                <span class="calc-name">计算器</span>
+            </div>
             <div class="header-pill date-pill" id="date-link" role="button" tabindex="0"
                  title="点击在 Bing 中搜索“日期”" aria-label="当前日期，点击在 Bing 中搜索“日期”">
                 <div class="date" id="date"></div>
@@ -989,6 +1034,7 @@
 
         const dateEl = document.getElementById('date');
         const dateLink = document.getElementById('date-link');
+        const calcLink = document.getElementById('calc-link');
         const weatherEl = document.getElementById('weather');
         const weatherLink = document.getElementById('weather-link');
 
@@ -1008,6 +1054,19 @@
         renderDate();
         // 页面跨天时自动更新日期
         setInterval(renderDate, 60 * 1000);
+
+        // 点击计算器跳转到 Bing 搜索“计算器”
+        function openCalculator() {
+            window.open('https://cn.bing.com/search?q=%E8%AE%A1%E7%AE%97%E5%99%A8', '_blank');
+        }
+
+        calcLink.addEventListener('click', openCalculator);
+        calcLink.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                openCalculator();
+            }
+        });
 
         // 点击日期跳转到 Bing 搜索“日期”
         function openDateSearch() {
