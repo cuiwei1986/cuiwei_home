@@ -95,10 +95,19 @@
             color: var(--text);
         }
 
-        .date-weather {
+        /* 顶部信息胶囊：日期、天气各自独立 */
+        .header-pills {
             display: flex;
             align-items: center;
-            gap: 18px;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header-pill {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             padding: 10px 22px;
             border-radius: 999px;
             background: rgba(255, 255, 255, 0.045);
@@ -110,7 +119,7 @@
                         background 0.25s ease, box-shadow 0.25s ease;
         }
 
-        .date-weather:hover {
+        .header-pill:hover {
             transform: translateY(-1px);
             background: rgba(255, 255, 255, 0.07);
             border-color: rgba(74, 222, 128, 0.35);
@@ -118,12 +127,12 @@
                         inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
-        .date-weather:focus-visible {
+        .header-pill:focus-visible {
             outline: 2px solid rgba(74, 222, 128, 0.6);
             outline-offset: 3px;
         }
 
-        .date-weather .date {
+        .header-pill .date {
             display: flex;
             align-items: center;
             gap: 12px;
@@ -162,13 +171,7 @@
             border: 1px solid rgba(74, 222, 128, 0.22);
         }
 
-        .date-weather .divider {
-            width: 1px;
-            height: 30px;
-            background: var(--line);
-        }
-
-        .date-weather .weather {
+        .weather {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -222,10 +225,16 @@
         }
 
         /* ---------- 搜索框 ---------- */
-        .search-box {
+        /* 搜索区外层（用于定位历史面板） */
+        .search-wrap {
+            position: relative;
             width: min(760px, calc(100% - 32px));
-            box-sizing: border-box;
             margin-top: 32px;
+        }
+
+        .search-box {
+            width: 100%;
+            box-sizing: border-box;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -456,6 +465,122 @@
             outline-offset: 3px;
         }
 
+        /* ---------- 搜索历史 ---------- */
+        .history-panel {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            right: 0;
+            z-index: 30;
+            padding: 6px;
+            background: #1C1C1E;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+        }
+
+        .history-panel[hidden] {
+            display: none;
+        }
+
+        .history-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 10px 6px;
+        }
+
+        .history-title {
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            color: var(--muted);
+        }
+
+        .history-clear {
+            padding: 3px 8px;
+            font-family: inherit;
+            font-size: 12px;
+            color: var(--muted);
+            background: none;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .history-clear:hover {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .history-list {
+            margin: 0;
+            padding: 0;
+            max-height: 304px;
+            overflow-y: auto;
+            list-style: none;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .history-item .h-text {
+            flex: 1 1 auto;
+            min-width: 0;
+            font-size: 14px;
+            text-align: left;
+            color: #D5D8DD;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .history-item:hover .h-text {
+            color: #FFFFFF;
+        }
+
+        .history-item .h-time {
+            flex: none;
+            font-size: 11px;
+            color: #6B7076;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .history-item .h-del {
+            flex: none;
+            display: grid;
+            place-items: center;
+            width: 22px;
+            height: 22px;
+            padding: 0;
+            color: var(--muted);
+            background: none;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .history-item .h-del:hover {
+            color: #F87171;
+            background: rgba(248, 113, 113, 0.14);
+        }
+
+        .history-item .h-del svg {
+            display: block;
+        }
+
         /* ---------- 快捷方式 ---------- */
         .favorites {
             width: min(880px, calc(100% - 32px));
@@ -583,23 +708,16 @@
                 padding: 10px 12px;
             }
 
-            .date-weather {
-                gap: 12px;
+            .header-pill {
                 padding: 9px 16px;
-                width: 100%;
-                justify-content: center;
             }
 
-            .date-weather .date {
+            .header-pill .date {
                 gap: 8px;
             }
 
             .date .day {
                 font-size: 24px;
-            }
-
-            .date-weather .divider {
-                height: 24px;
             }
 
             .weather .temp {
@@ -610,8 +728,11 @@
                 font-size: 10px;
             }
 
-            .search-box {
+            .search-wrap {
                 margin-top: 20px;
+            }
+
+            .search-box {
                 gap: 6px;
                 padding: 6px;
             }
@@ -680,23 +801,27 @@
     <div class="header">
         <div class="brand">
             <span class="brand-mark" aria-hidden="true">崔</span>
-            <span class="brand-name">崔伟</span>
         </div>
-        <div class="date-weather" id="weather-link" role="button" tabindex="0"
-             title="点击查看北京天气" aria-label="当前日期与天气，点击查看北京天气">
-            <div class="date" id="date"></div>
-            <span class="divider" aria-hidden="true"></span>
-            <div class="weather loading" id="weather">
-                <span class="weather-icon">⏳</span>
-                <span class="weather-info">
-                    <span class="temp">--°</span>
-                    <span class="desc">正在获取天气…</span>
-                </span>
+        <div class="header-pills">
+            <div class="header-pill date-pill" id="date-link" role="button" tabindex="0"
+                 title="点击在 Bing 中搜索“日期”" aria-label="当前日期，点击在 Bing 中搜索“日期”">
+                <div class="date" id="date"></div>
+            </div>
+            <div class="header-pill weather-pill" id="weather-link" role="button" tabindex="0"
+                 title="点击查看北京天气" aria-label="当前天气，点击查看北京天气">
+                <div class="weather loading" id="weather">
+                    <span class="weather-icon">⏳</span>
+                    <span class="weather-info">
+                        <span class="temp">--°</span>
+                        <span class="desc">正在获取天气…</span>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="search-box">
+    <div class="search-wrap">
+        <div class="search-box">
         <div class="engine" id="engine" data-engine="bing">
             <button type="button" class="engine-btn" id="engine-btn" aria-haspopup="listbox"
                     aria-expanded="false" aria-controls="engine-menu" aria-label="搜索引擎：Bing">
@@ -762,7 +887,7 @@
             </ul>
         </div>
         <input type="hidden" id="search-engine" value="https://www.bing.com/search?q=">
-        <input type="text" id="search-query" placeholder="搜索网页、新闻、视频…"
+        <input type="text" id="search-query"
                aria-label="搜索内容" autocomplete="off" enterkeyhint="search">
         <button type="button" class="search-btn" onclick="search()" aria-label="搜索">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -772,6 +897,15 @@
             </svg>
             <span class="btn-label">搜索</span>
         </button>
+        </div>
+
+        <div class="history-panel" id="history-panel" hidden>
+            <div class="history-head">
+                <span class="history-title">搜索历史</span>
+                <button type="button" class="history-clear" id="history-clear">清空</button>
+            </div>
+            <ul class="history-list" id="history-list"></ul>
+        </div>
     </div>
 
     <div class="favorites">
@@ -804,7 +938,7 @@
             <span class="name">豆瓣</span>
         </a>
         <a href="http://www.mtime.com" target="_blank" rel="noopener noreferrer" class="favorite">
-            <span class="favicon"><img src="https://dgss0.bdstatic.com/5bVYsj_p_tVS5dKfpU_Y_D3/urlicon/9359.png" alt="Mtime" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>
+            <span class="favicon"><img src="https://www.mtime.com/favicon.ico" alt="Mtime" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>
             <span class="name">Mtime</span>
         </a>
         <a href="https://www.eastmoney.com" target="_blank" rel="noopener noreferrer" class="favorite">
@@ -854,6 +988,7 @@
         const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=Beijing&appid=${weatherApiKey}&units=metric&lang=zh_cn`;
 
         const dateEl = document.getElementById('date');
+        const dateLink = document.getElementById('date-link');
         const weatherEl = document.getElementById('weather');
         const weatherLink = document.getElementById('weather-link');
 
@@ -873,6 +1008,19 @@
         renderDate();
         // 页面跨天时自动更新日期
         setInterval(renderDate, 60 * 1000);
+
+        // 点击日期跳转到 Bing 搜索“日期”
+        function openDateSearch() {
+            window.open('https://cn.bing.com/search?q=%E6%97%A5%E6%9C%9F', '_blank');
+        }
+
+        dateLink.addEventListener('click', openDateSearch);
+        dateLink.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                openDateSearch();
+            }
+        });
 
         // 根据天气代码选择图标
         function weatherIcon(id) {
@@ -944,6 +1092,7 @@
             }
 
             window.open(engine + encodeURIComponent(query), '_blank');
+            addHistory(query);
         }
 
         // 回车即搜索
@@ -951,8 +1100,130 @@
             if (event.key === 'Enter') {
                 event.preventDefault();
                 search();
+            } else if (event.key === 'Escape') {
+                hideHistory();
             }
         });
+
+        // ---------- 搜索历史（localStorage） ----------
+        const HISTORY_KEY = 'cuiwei_search_history';
+        const HISTORY_MAX = 20;
+        const searchWrap = document.querySelector('.search-wrap');
+        const historyPanel = document.getElementById('history-panel');
+        const historyList = document.getElementById('history-list');
+        const historyClear = document.getElementById('history-clear');
+
+        function loadHistory() {
+            try {
+                const list = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+                return Array.isArray(list)
+                    ? list.filter(item => item && typeof item.q === 'string' && item.q.trim())
+                    : [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveHistory(list) {
+            try {
+                localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+            } catch {
+                /* 存储不可用时静默失败 */
+            }
+        }
+
+        // 记录一次搜索：去重后置顶，最多保留 HISTORY_MAX 条
+        function addHistory(query) {
+            const list = loadHistory().filter(item => item.q !== query);
+            list.unshift({ q: query, t: Date.now() });
+            saveHistory(list.slice(0, HISTORY_MAX));
+            renderHistory();
+        }
+
+        function removeHistory(index) {
+            const list = loadHistory();
+            list.splice(index, 1);
+            saveHistory(list);
+            renderHistory();
+        }
+
+        function clearHistory() {
+            saveHistory([]);
+            hideHistory();
+        }
+
+        function formatTime(ts) {
+            const d = new Date(ts);
+            const now = new Date();
+            const hm = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+            const yesterday = new Date(now);
+            yesterday.setDate(now.getDate() - 1);
+
+            if (d.toDateString() === now.toDateString()) return `今天 ${hm}`;
+            if (d.toDateString() === yesterday.toDateString()) return `昨天 ${hm}`;
+            return `${d.getMonth() + 1}/${d.getDate()} ${hm}`;
+        }
+
+        function renderHistory() {
+            const list = loadHistory();
+            historyList.innerHTML = '';
+
+            if (!list.length) {
+                hideHistory();
+                return;
+            }
+
+            list.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.className = 'history-item';
+
+                const text = document.createElement('span');
+                text.className = 'h-text';
+                text.textContent = item.q;
+
+                const time = document.createElement('span');
+                time.className = 'h-time';
+                time.textContent = formatTime(item.t);
+
+                const del = document.createElement('button');
+                del.type = 'button';
+                del.className = 'h-del';
+                del.title = '删除此条记录';
+                del.setAttribute('aria-label', '删除此条记录：' + item.q);
+                del.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>`;
+                del.addEventListener('click', event => {
+                    event.stopPropagation();
+                    removeHistory(index);
+                });
+
+                // 点击某条历史直接重新搜索
+                li.addEventListener('click', () => {
+                    searchInput.value = item.q;
+                    search();
+                    hideHistory();
+                });
+
+                li.append(text, time, del);
+                historyList.appendChild(li);
+            });
+        }
+
+        function showHistory() {
+            renderHistory();
+            historyPanel.hidden = !loadHistory().length;
+        }
+
+        function hideHistory() {
+            historyPanel.hidden = true;
+        }
+
+        searchInput.addEventListener('focus', showHistory);
+        searchInput.addEventListener('click', showHistory);
+        historyClear.addEventListener('click', clearHistory);
 
         // 搜索引擎下拉（图标 + 键盘操作）
         const engineBox = document.getElementById('engine');
@@ -1025,9 +1296,10 @@
             });
         });
 
-        // 点击空白处关闭下拉
+        // 点击空白处关闭下拉与历史面板
         document.addEventListener('click', event => {
             if (!engineBox.contains(event.target)) setEngineMenu(false);
+            if (!searchWrap.contains(event.target)) hideHistory();
         });
 
         // 搜索引擎图标加载失败时用品牌首字占位
