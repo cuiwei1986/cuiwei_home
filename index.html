@@ -1735,7 +1735,6 @@
             const awayName = away.team.displayName;
             const opponent = homeName === 'AC Milan' ? awayName : homeName;
             let compLabel = leagueLabel;
-            if (/Inter/i.test(opponent)) compLabel += ' · 米兰德比';
 
             // 队徽：优先用接口返回的 logos，其次按球队 ID 拼接 ESPN 图床
             const crestOf = team => (team.logos && team.logos[0] && team.logos[0].href)

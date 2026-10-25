@@ -1,0 +1,56 @@
+# Java
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# Build results
+target/
+dist/
+build/
+
+# IDEA files
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse files
+.settings/
+.classpath
+.project
+
+# VSCode
+.vscode/
+
+# NetBeans
+.nb-gradle/
+nbproject/private/
+nbbuild/
+nbdist/
+
+# Log
+*.log
+*.log.*
+
+# NodeJS
+node_modules/
+
+# flattened
+.flattened-pom.xml
+
+# Mac
+.DS_Store
+
+# Wanda
+application-default.*
+bootstrap-default.*
+remote.client.*
