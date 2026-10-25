@@ -239,6 +239,13 @@
             font-variant-numeric: tabular-nums;
         }
 
+        .weather .temp .city {
+            margin-right: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+        }
+
         .weather .desc .min { color: #93C5FD; }
         .weather .desc .max { color: #FBBF24; }
 
@@ -1200,7 +1207,7 @@
                 <div class="weather loading" id="weather">
                     <span class="weather-icon">⏳</span>
                     <span class="weather-info">
-                        <span class="temp">--°</span>
+                        <span class="temp"><span class="city">北京</span>--°</span>
                         <span class="desc">正在获取天气…</span>
                     </span>
                 </div>
@@ -1471,7 +1478,7 @@
                 weatherEl.innerHTML = `
                     <span class="weather-icon">${icon}</span>
                     <span class="weather-info">
-                        <span class="temp">${temp}°<span class="unit">C</span></span>
+                        <span class="temp"><span class="city">北京</span>${temp}°<span class="unit">C</span></span>
                         <span class="desc">${weatherDescription} · <span class="min">${tempMin}°</span> / <span class="max">${tempMax}°</span></span>
                     </span>`;
             })
@@ -1480,7 +1487,7 @@
                 weatherEl.innerHTML = `
                     <span class="weather-icon">🌐</span>
                     <span class="weather-info">
-                        <span class="temp">--°</span>
+                        <span class="temp"><span class="city">北京</span>--°</span>
                         <span class="desc">天气获取失败，点击查看</span>
                     </span>`;
             });
