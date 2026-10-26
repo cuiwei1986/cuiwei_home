@@ -1684,7 +1684,7 @@
         const milanList = document.getElementById('milan-list');
         const milanFootText = document.getElementById('milan-foot-text');
 
-        let pastFixtures = [];    // 已结束（新→旧）
+        let pastFixtures = [];    // 已结束（旧→新）
         let futureFixtures = [];  // 未开赛（旧→新）
         let futureDateQueue = []; // 待抓取的未来比赛日
         let calendarsLoaded = false;
@@ -1864,7 +1864,9 @@
             topSentinel.hidden = true;
             bottomSentinel.hidden = true;
 
-            pastFixtures.slice(0, PAST_INIT).forEach(fixture => {
+            // 历史场次按时间正序存放，默认展示最靠后的 PAST_INIT 场（即最近结束的）
+            const pastStart = Math.max(0, pastFixtures.length - PAST_INIT);
+            pastFixtures.slice(pastStart).forEach(fixture => {
                 milanList.insertBefore(createMatchRow(fixture), bottomSentinel);
                 pastRendered++;
             });
@@ -1889,11 +1891,13 @@
             updateSentinels();
 
             const prevHeight = milanList.scrollHeight;
-            const take = Math.min(3, pastFixtures.length - pastRendered);
-            pastFixtures.slice(pastRendered, pastRendered + take).forEach(fixture => {
-                milanList.insertBefore(createMatchRow(fixture), topSentinel.nextSibling);
+            // 从尚未渲染的尾部往前取 3 场，逆序插入顶部，保证整体仍是时间正序
+            const end = pastFixtures.length - pastRendered;
+            const start = Math.max(0, end - 3);
+            for (let i = end - 1; i >= start; i--) {
+                milanList.insertBefore(createMatchRow(pastFixtures[i]), topSentinel.nextSibling);
                 pastRendered++;
-            });
+            }
             bindCrestFallback();
             // 保持视口位置，避免新内容插入后跳动
             milanList.scrollTop += milanList.scrollHeight - prevHeight;
@@ -2006,7 +2010,7 @@
                     }
                 });
 
-                pastFixtures.sort((a, b) => b.ts - a.ts);
+                pastFixtures.sort((a, b) => a.ts - b.ts);
                 nextCandidates.sort((a, b) => a.ts - b.ts);
 
                 // nextEvent 缺失（接口抖动）时，用今明两天赛程兜底找下一场
