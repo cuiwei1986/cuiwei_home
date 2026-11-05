@@ -846,6 +846,7 @@
         .m-date .t {
             font-size: 11px;
             color: var(--muted);
+            white-space: nowrap;
             font-variant-numeric: tabular-nums;
         }
 
@@ -1799,13 +1800,14 @@
 
         // ESPN 时间为 UTC，转换为北京时间
         function toBeijing(iso) {
-            if (!iso) return { d: '--/--', t: '--:--' };
+            if (!iso) return { d: '--/--', t: '--:--', w: '' };
             const utcStr = /Z|[+-]\d{2}:?\d{2}$/.test(iso) ? iso : iso + 'Z';
             const utc = new Date(utcStr);
-            if (Number.isNaN(utc.getTime())) return { d: '--/--', t: '--:--' };
+            if (Number.isNaN(utc.getTime())) return { d: '--/--', t: '--:--', w: '' };
             const fmtDate = new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', month: 'numeric', day: 'numeric' });
             const fmtTime = new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', hour: '2-digit', minute: '2-digit', hour12: false });
-            return { d: fmtDate.format(utc), t: fmtTime.format(utc) };
+            const fmtWeek = new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', weekday: 'short' });
+            return { d: fmtDate.format(utc), t: fmtTime.format(utc), w: fmtWeek.format(utc) };
         }
 
         function ymd(date) {
@@ -1842,11 +1844,12 @@
             const matchUrl = (summaryLink && summaryLink.href)
                 || (e.id ? `https://www.espn.com/soccer/match/_/gameId/${e.id}` : '');
 
-            const { d, t } = toBeijing(e.date);
+            const { d, t, w } = toBeijing(e.date);
             return {
                 ts: Date.parse(/Z|[+-]\d{2}:?\d{2}$/.test(e.date) ? e.date : e.date + 'Z'),
                 date: d,
                 time: t,
+                week: w,
                 comp: compLabel,
                 home: TEAM_ZH[homeName] || homeName,
                 away: TEAM_ZH[awayName] || awayName,
@@ -1877,7 +1880,7 @@
 
             const date = document.createElement('div');
             date.className = 'm-date';
-            date.innerHTML = `<span class="d">${fixture.date}</span><span class="t">${fixture.time}</span>`;
+            date.innerHTML = `<span class="d">${fixture.date}</span><span class="t">${fixture.week ? fixture.week + ' ' : ''}${fixture.time}</span>`;
 
             const main = document.createElement('div');
             main.className = 'm-main';
